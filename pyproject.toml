@@ -5,14 +5,100 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fake-useragent-min"
 version = "0.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 description = "A minimal project demonstrating user-agent utilities and ruff-based tooling."
 dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
 
+# =============================================================================
+# Ruff Configuration - Primary Linting and Formatting Tool
+# =============================================================================
+
 [tool.ruff]
-target-version = "py39"
-# Initial, intentionally minimal configuration to be enhanced.
+# Target Python 3.10+ for modern syntax support
+target-version = "py310"
+
+# Standard line length for readability
+line-length = 88
+
+# Use 4 spaces for indentation (Python standard)
+indent-width = 4
+
+# Include patterns: source code, tests, and pyproject.toml
+include = [
+    "src/**/*.py",
+    "tests/*.py",
+    "**/pyproject.toml",
+]
+
+# Exclude common non-source directories
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "*.egg-info",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# Select a sensible set of rules for a small library
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort (import sorting)
+    "N",      # pep8-naming
+    "D",      # pydocstyle (docstrings)
+    "UP",     # pyupgrade (modern Python syntax)
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "RUF",    # Ruff-specific rules
+]
+
+# Ignore rules that are too strict for this small project
+ignore = [
+    "D100",   # Missing docstring in public module (allow some flexibility)
+    "D104",   # Missing docstring in public package
+    "D203",   # 1 blank line required before class docstring (conflicts with D211)
+    "D213",   # Multi-line docstring summary should start at the second line (conflicts with D212)
+]
+
+# Allow autofix for all enabled rules when `--fix` is provided
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+# Ensure consistent import sorting
+known-first-party = ["fake_useragent_min"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings
+convention = "google"
+
+[tool.ruff.format]
+# Use double quotes for strings (Black-compatible)
+quote-style = "double"
+
+# Indent with spaces
+indent-style = "space"
+
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Auto-detect line endings
+line-ending = "auto"
+
+# =============================================================================
+# Pytest Configuration
+# =============================================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 

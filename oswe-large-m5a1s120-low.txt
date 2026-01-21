@@ -1,0 +1,285 @@
+User: Prompt
+Enhance a Minimal Ruff-Based Tooling Project
+
+You are a senior software engineer. You are given a small Python codebase that
+demonstrates simple user-agent utilities and project tooling. Your task is to
+enhance and structure the configuration so that the project uses `ruff` as the
+primary tool for linting and formatting, **without changing the functional
+behavior** of the existing Python code.
+
+---
+
+## Repository Structure (Given)
+
+At the start, the repository contains only these baseline files inside the
+`test_project` directory:
+
+* `pyproject.toml` — minimal project metadata and an intentionally simple
+  initial `[tool.ruff]` configuration
+* `src/fake_useragent_min/__init__.py` — package initializer exporting
+  `get_random_user_agent`
+* `src/fake_useragent_min/fake.py` — tiny fake-useragent-style implementation
+  with a `get_random_user_agent()` function returning a random User-Agent
+  string from a short built-in list
+* `tests/test_fake_min.py` — pytest-style test verifying that the returned
+  value is a non-empty string containing "Mozilla/5.0"
+
+You must treat this as the **baseline project**. Your changes should make the
+tooling and configuration clearer and more robust, while leaving the observable
+behavior of the Python functions and tests unchanged.
+
+---
+
+## Core Objective
+
+Enhance `pyproject.toml` and any necessary project files so that:
+
+* `ruff` is clearly configured as the primary linting and formatting tool
+* The configuration is explicit, well-structured, and easy to reuse
+* The existing code and tests continue to behave the same from a caller's
+  perspective
+
+This is a **tooling and configuration enhancement**, not a feature change.
+
+---
+
+## Hard Constraints
+
+1) Functional behavior must not change
+
+* The public function `get_random_user_agent()` must keep the same signature
+  and semantic behavior (return type, general value shape).
+* The existing test `tests/test_fake_min.py` must remain logically valid after
+  your changes (it may be updated only as needed to reflect improved tooling,
+  not to weaken its checks).
+
+2) Ruff configuration clarity
+
+* Move toward a clear, modern `ruff` configuration style, for example using
+  `[tool.ruff]` plus `[tool.ruff.lint]` and related sections.
+* Configure reasonable values such as `target-version`, `line-length`, and
+  `indent-width`.
+* Use an `include` list that targets the source code, tests, and the
+  `pyproject.toml` file itself (for example: `src/**/*.py`, `tests/*.py`, and
+  `**/pyproject.toml`).
+* Define a sensible set of selected rules and ignores, reflecting what a small
+  library like this would reasonably use.
+
+3) Code changes are minimal and non-semantic
+
+* You may make small formatting or import-order adjustments to the existing
+  source and test files **only** to satisfy the refined `ruff` rules.
+* Do not change the meaning of any function, test, or public API.
+
+4) No new external dependencies are required
+
+* Apart from common tools such as `pytest` and `ruff` (declared as development
+  dependencies), the project should not require heavyweight third-party
+  libraries.
+
+---
+
+## Testing Requirements
+
+* Tests must be written using `pytest` or the built-in `unittest` framework.
+* Do not implement custom ad-hoc test harnesses that rely only on printing
+  output; tests should be runnable via a standard test runner (`pytest` or
+  `python -m unittest`).
+* All existing tests in `tests/test_fake_min.py` must continue to pass after
+  your changes. You may add new tests to validate configuration or behavior,
+  but must not weaken existing coverage.
+* You must design and add at least one new automated test (under the `tests`
+  directory) that directly encodes a key requirement from this prompt (for
+  example, that `get_random_user_agent()` still satisfies the same
+  invariants, or that the expected Ruff configuration sections exist in
+  `pyproject.toml`). These new tests should fail on the baseline project and
+  pass after your patch is applied.
+* After implementing your changes, you must run the full test suite using a
+  standard command (for example, `pytest`) and ensure that all tests pass
+  before considering the task complete. Do not add custom print-based
+  summaries; rely on the test framework's own reporting.
+
+---
+
+## Environment & Platform Constraints
+
+* Target environment is Windows 10 or later (you may also keep the project
+  runnable on other platforms, but do not depend on Unix-only features).
+* Clearly assume a modern Python 3 version (for example, Python 3.10+) when
+  choosing configuration options such as `target-version` for `ruff`.
+* Do not introduce external dependencies beyond common development tools such
+  as `pytest` and `ruff` unless strictly necessary.
+
+---
+
+## Deliverables
+
+Within this workspace, you should directly update or create files so that:
+
+* `pyproject.toml` contains the refined `ruff` configuration and any minimal
+  dependency declarations needed for tests/tooling.
+* `src/fake_useragent_min/fake.py` and `tests/test_fake_min.py` are kept
+  aligned with the new `ruff` rules while preserving their behavior.
+* At least one new automated test under the `tests` directory encodes a key
+  requirement from this prompt and is used to verify that the enhanced
+  configuration and behavior are correct.
+* Optionally, you may add:
+  * A small `README.md` under `test_project` describing:
+    * Required Python version.
+    * How to install dependencies.
+    * How to run tests (e.g. `pytest`).
+  * A one-command test script (for example `run_tests.bat`) that runs the full
+    pytest suite on Windows using standard commands.
+
+Make all code and configuration changes directly in the project files, and use
+the automated tests as the primary way to validate that the prompt requirements
+have been met.
+
+GitHub Copilot: Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/pyproject.toml)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/src/fake_useragent_min/__init__.py)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/src/fake_useragent_min/fake.py)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_fake_min.py)
+
+Now I have a clear picture of the baseline project. Let me create a todo list and implement the enhancements: 
+
+Created 4 todos
+
+Replacing 17 lines with 103 lines in [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/pyproject.toml)
+
+
+```
+
+```
+
+
+Starting: *Add new test for requirements validation* (2/4)
+
+Now let me create a new test file that validates key requirements from the prompt: 
+
+Created [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_config_requirements.py)
+
+Starting: *Format existing code per Ruff rules* (3/4)
+
+Now let me configure the Python environment and run Ruff to check if any formatting changes are needed: 
+
+Configuring a Python Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-shuliu1\\test\\0121-2\\oswe-large-m5a1s120-low"
+}
+
+Creating a Virtual Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-shuliu1\\test\\0121-2\\oswe-large-m5a1s120-low"
+}
+
+Installing packages pytest, ruff in .venv (3.14.2)
+Completed with input: {
+  "packageList": [
+    "pytest",
+    "ruff"
+  ],
+  "resourcePath": "c:\\Users\\v-shuliu1\\test\\0121-2\\oswe-large-m5a1s120-low"
+}
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff check src tests --show-fixes
+
+There are some issues to fix. Let me run Ruff with `--fix` for autofixable issues, then manually fix the remaining ones: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff check src tests --fix
+
+Good progress. Now I need to fix the remaining issues - mostly line-length issues in the test file and a missing docstring. Let me read the current state of the files and fix them: 
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_config_requirements.py)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_fake_min.py)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/src/fake_useragent_min/fake.py)
+
+Good, Ruff auto-fixed fake.py. Now I need to fix the line-length issues in the test files. Let me rewrite the test file with proper line lengths and add the docstring to the original test: 
+
+Replacing 38 lines with 61 lines in [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_fake_min.py), [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/tests/test_config_requirements.py)
+
+
+```
+
+```
+
+```
+
+```
+Now let me run Ruff again to verify all issues are fixed: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff check src tests
+
+All Ruff checks pass. Now let me also run the formatter to ensure everything is properly formatted: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff format src tests --check
+
+Let me apply the formatting: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff format src tests
+
+Starting: *Run tests to verify all pass* (4/4)
+
+Now let me run all the tests to verify everything passes: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m pytest tests -v
+
+All 14 tests pass. Let me also verify that Ruff check still passes after formatting: 
+
+Ran terminal command: C:/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/.venv/Scripts/python.exe -m ruff check src tests
+
+Completed: *Run tests to verify all pass* (4/4)
+
+Now let me add the optional README.md and run_tests.bat as suggested in the deliverables: 
+
+Created [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/README.md)
+
+Created [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/run_tests.bat)
+
+Let me show the final state of the key files: 
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/pyproject.toml)
+
+Read [](file:///c%3A/Users/v-shuliu1/test/0121-2/oswe-large-m5a1s120-low/src/fake_useragent_min/fake.py)
+
+I've successfully enhanced the project. Here's a summary of the changes made:
+
+## Summary of Changes
+
+### 1. Enhanced pyproject.toml
+- Updated `requires-python` to `>=3.10`
+- Added comprehensive `[tool.ruff]` configuration with:
+  - `target-version = "py310"` for modern Python syntax
+  - `line-length = 88` (Black-compatible)
+  - `indent-width = 4` (Python standard)
+  - `include` patterns covering `src/**/*.py`, `tests/*.py`, and pyproject.toml
+  - `exclude` patterns for common non-source directories
+- Added `[tool.ruff.lint]` with sensible rule selections (E, W, F, I, N, D, UP, B, C4, SIM, RUF)
+- Added `[tool.ruff.lint.isort]` for import sorting configuration
+- Added `[tool.ruff.lint.pydocstyle]` with Google-style convention
+- Added `[tool.ruff.format]` for formatting configuration
+- Added `[tool.pytest.ini_options]` for pytest configuration
+
+### 2. Updated Source Files
+- fake.py: Updated to use `collections.abc.Sequence` (modern Python) and removed blank line after docstring
+
+### 3. Updated Test File
+- test_fake_min.py: Added docstring to test function
+
+### 4. New Test File
+- test_config_requirements.py: 13 new tests that validate:
+  - Ruff configuration sections exist (`[tool.ruff]`, `[tool.ruff.lint]`, `[tool.ruff.format]`)
+  - Configuration values are appropriate (target-version, line-length, indent-width, include patterns, selected rules)
+  - Function behavior invariants are preserved (return type, non-empty, Mozilla prefix, signature)
+
+### 5. Optional Deliverables
+- README.md: Documents Python version requirements, installation, and usage
+- run_tests.bat: Windows batch script to run the full test suite
+
+**All 14 tests pass** and **Ruff reports no linting or formatting issues**.
+
+Made changes.
