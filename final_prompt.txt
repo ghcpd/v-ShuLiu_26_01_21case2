@@ -1,0 +1,101 @@
+1. Role & Objective
+You are a senior software engineer working as a tooling and configuration specialist. Your core objective is to enhance and structure the configuration of a small Python project so that it uses Ruff as the primary tool for linting and formatting, without changing the functional behavior of the existing Python code.
+
+2. Inputs & Context
+- You are given an existing minimal Python project in the current working directory.
+- The repository structure at the start must be treated as the baseline project and includes exactly these files:
+  - pyproject.toml — minimal project metadata and an intentionally simple initial [tool.ruff] configuration.
+  - src/fake_useragent_min/__init__.py — package initializer exporting get_random_user_agent.
+  - src/fake_useragent_min/fake.py — tiny fake-useragent-style implementation with a get_random_user_agent() function returning a random User-Agent string from a short built-in list.
+  - tests/test_fake_min.py — pytest-style test verifying that the returned value from get_random_user_agent() is a non-empty string containing "Mozilla/5.0".
+- Assume the target environment is Windows 10 or later, but keep the project runnable on other platforms.
+- Assume a modern Python 3 version (e.g., Python 3.10+) when choosing configuration options.
+
+3. Step-by-Step Instructions
+3.1 Baseline Understanding
+- Read the existing pyproject.toml, src/fake_useragent_min/__init__.py, src/fake_useragent_min/fake.py, and tests/test_fake_min.py files.
+- Treat these as the baseline; do not remove or replace them.
+
+3.2 Ruff Configuration Enhancement
+- In pyproject.toml, configure Ruff as the primary linting and formatting tool using a clear, modern configuration style.
+- Ensure Ruff is configured using, at minimum, the following sections:
+  - [tool.ruff]
+  - [tool.ruff.lint]
+  - [tool.ruff.format]
+- Under [tool.ruff], set explicit core options including:
+  - target-version set to a modern Python version compatible with the project (e.g., "py310").
+  - line-length to a reasonable value (e.g., 100).
+  - indent-width to a reasonable value (e.g., 4).
+  - include list that targets at least:
+    - src/**/*.py
+    - tests/**/*.py
+    - **/pyproject.toml
+  - src list including at least ["src"], so Ruff knows where the package code lives.
+- Under [tool.ruff.lint]:
+  - Define a sensible set of selected rules suitable for a small Python library, such as codes from E, F, W, I, UP, B, C4, SIM, PT (you may choose a reasonable subset or superset consistent with this intent).
+  - Define an ignore list only where reasonably justified (e.g., ignoring B905 for Python compatibility), and keep it minimal.
+- Under [tool.ruff.format]:
+  - Set explicit code formatting preferences, such as:
+    - quote-style (e.g., "double").
+    - indent-style (e.g., "space").
+    - skip-magic-trailing-comma (boolean).
+    - line-ending (e.g., "auto").
+- Ensure that pyproject.toml also declares any minimal development dependencies needed for tests and tooling, such as pytest and ruff, and avoid heavy third-party libraries.
+
+3.3 Code Alignment with Ruff (Non-Semantic Changes Only)
+- Examine src/fake_useragent_min/__init__.py, src/fake_useragent_min/fake.py, and tests/test_fake_min.py.
+- Make only minimal formatting or import-order adjustments required to satisfy the refined Ruff rules.
+- Do not change the public API or semantics of any function:
+  - The function get_random_user_agent() must keep the same name, signature, and semantic behavior (it must still return a random User-Agent string from a small built-in list, and the result must contain a "Mozilla/5.0" style value consistent with the original behavior).
+- Do not weaken the logic of the existing tests in tests/test_fake_min.py; you may only update them as needed to remain compatible with the new tooling and configuration.
+
+3.4 New Test Requirements
+- Under the tests directory, add at least one new automated test file that encodes a key requirement from this specification.
+- The new test must:
+  - Be written using pytest (preferred) or Python's built-in unittest.
+  - Directly verify at least one of the following:
+    - That get_random_user_agent() still satisfies the same invariants as described (returns a non-empty string, includes "Mozilla/5.0", and behaves as a simple random selection from the predefined list), or
+    - That the expected Ruff configuration sections and critical options exist in pyproject.toml (for example, verifying that [tool.ruff], [tool.ruff.lint], and [tool.ruff.format] are present with the required keys such as target-version, line-length, indent-width, include patterns, and key lint/format options).
+- Design the new test so that it would fail on the baseline project (before your tooling and configuration enhancements) and pass after your changes.
+
+3.5 Testing Setup and Execution
+- Ensure the project can be tested using a standard test runner without any custom harnesses:
+  - The tests must be runnable via pytest (e.g., `pytest`) or via `python -m unittest` if you choose unittest.
+- Do not rely on print-based output as a test harness; use only the test framework's reporting.
+- Optionally, you may:
+  - Add a small README.md in the project root describing:
+    - The required Python version.
+    - How to install dependencies (including dev extras, such as `pip install -e .[dev]`).
+    - How to run tests (e.g., `pytest`).
+  - Add a simple one-command test script for Windows (e.g., run_tests.bat) that runs the full pytest suite using standard commands.
+- After implementing your changes, run the full test suite (for example, using `pytest` in the project root) and ensure that all tests pass.
+
+4. Output Specification
+- Directly modify the existing project files in the current working directory to incorporate your changes.
+- At minimum, the final state must satisfy:
+  - pyproject.toml contains the refined Ruff configuration (with [tool.ruff], [tool.ruff.lint], [tool.ruff.format]) and minimal dependency declarations needed for tests and tooling.
+  - src/fake_useragent_min/fake.py preserves the behavior of get_random_user_agent() while being compliant with the new Ruff rules.
+  - tests/test_fake_min.py remains a valid and meaningful test of get_random_user_agent() and is aligned with the new configuration.
+  - At least one new test file under tests/ encodes a key requirement from this specification and passes after your changes.
+- All tests must pass when run with a standard command such as `pytest`.
+
+5. Constraints & Preferences
+- Do not change the functional behavior of any existing Python code or tests from the caller's perspective:
+  - The public function get_random_user_agent() must preserve its original semantics and return shape.
+  - The existing test in tests/test_fake_min.py must remain logically valid and should not be weakened.
+- Code changes must be minimal and non-semantic; limit them to formatting, import ordering, and other style changes required by Ruff.
+- Do not introduce new external runtime dependencies beyond common development tools like pytest and ruff, unless strictly necessary.
+- Keep the configuration explicit, well-structured, and easy to reuse by other small Python library projects.
+- Target Windows 10 or later, but do not rely on Unix-only features; the project should continue to run cross-platform where reasonably possible.
+
+6. Quality Gates
+- Verify that the new test you added fails on the original baseline configuration and passes after your configuration and tooling changes (conceptually; in this run, ensure tests pass on the final state).
+- Confirm that all tests in the tests directory pass when executed with pytest from the project root.
+- Confirm that Ruff configuration in pyproject.toml is syntactically valid and includes the required sections and options described above.
+- Confirm that you have not altered the public API or observable behavior of get_random_user_agent().
+
+7. Critical Compliance Instructions (Highest Priority)
+- Do not change the semantics or public API of existing functions; tooling and configuration enhancements must not break or weaken existing behavior.
+- Keep Ruff as the primary linting and formatting tool, with explicit configuration under [tool.ruff], [tool.ruff.lint], and [tool.ruff.format].
+- Ensure at least one new automated test encodes a key requirement from this specification and that all tests pass using a standard test runner.
+- Avoid introducing unnecessary external dependencies; limit additions to commonly accepted development tools like pytest and ruff.
