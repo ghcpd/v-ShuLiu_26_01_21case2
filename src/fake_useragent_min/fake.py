@@ -6,8 +6,7 @@ This module provides a tiny example that can be formatted and linted with ruff.
 from __future__ import annotations
 
 import random
-from typing import Sequence
-
+from collections.abc import Sequence
 
 _USER_AGENTS: Sequence[str] = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -17,7 +16,10 @@ _USER_AGENTS: Sequence[str] = (
 
 
 def get_random_user_agent() -> str:
-    """Return a random user-agent string from a small built-in list."""
+    """Return a random user-agent string from a small built-in list.
 
+    Returns:
+        A string containing a User-Agent header value, always starting
+        with "Mozilla/5.0".
+    """
     return random.choice(_USER_AGENTS)
-

@@ -5,14 +5,105 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fake-useragent-min"
 version = "0.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 description = "A minimal project demonstrating user-agent utilities and ruff-based tooling."
 dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
 
+# =============================================================================
+# Ruff Configuration
+# =============================================================================
+# Ruff is used as the primary linting and formatting tool for this project.
+# Documentation: https://docs.astral.sh/ruff/
+
 [tool.ruff]
-target-version = "py39"
-# Initial, intentionally minimal configuration to be enhanced.
+# Target Python version for syntax and feature compatibility.
+target-version = "py310"
+
+# Maximum line length for both linting and formatting.
+line-length = 88
+
+# Number of spaces per indentation level.
+indent-width = 4
+
+# Files and directories to include in linting/formatting.
+include = [
+    "src/**/*.py",
+    "tests/*.py",
+    "**/pyproject.toml",
+]
+
+# Files and directories to exclude from linting/formatting.
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "*.egg-info",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# Rule selection: enable a sensible set of rules for a small library.
+# See https://docs.astral.sh/ruff/rules/ for all available rules.
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort (import sorting)
+    "N",      # pep8-naming
+    "D",      # pydocstyle (docstring conventions)
+    "UP",     # pyupgrade (modernize Python syntax)
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "RUF",    # Ruff-specific rules
+]
+
+# Rules to ignore (with justification).
+ignore = [
+    "D100",   # Missing docstring in public module (not required for small projects)
+    "D104",   # Missing docstring in public package (not required for __init__.py)
+    "D203",   # 1 blank line required before class docstring (conflicts with D211)
+    "D213",   # Multi-line docstring summary should start at second line (conflicts with D212)
+]
+
+# Allow autofix for all enabled rules when `--fix` is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+# isort configuration for consistent import ordering.
+known-first-party = ["fake_useragent_min"]
+force-single-line = false
+combine-as-imports = true
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings.
+convention = "google"
+
+[tool.ruff.format]
+# Use double quotes for strings (consistent with Black).
+quote-style = "double"
+
+# Indent with spaces (not tabs).
+indent-style = "space"
+
+# Respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Automatically detect appropriate line ending.
+line-ending = "auto"
+
+# =============================================================================
+# Pytest Configuration
+# =============================================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v"
 
