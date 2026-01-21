@@ -13,6 +13,72 @@ dependencies = []
 dev = ["pytest", "ruff"]
 
 [tool.ruff]
-target-version = "py39"
-# Initial, intentionally minimal configuration to be enhanced.
+# Target Python 3.10+ as specified in requirements
+target-version = "py310"
+line-length = 100
+indent-width = 4
+
+# Include patterns for source code, tests, and configuration
+include = [
+    "src/**/*.py",
+    "tests/**/*.py",
+    "**/pyproject.toml",
+]
+
+# Exclude common build/cache directories
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "*.egg-info",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# Select a sensible set of rules for a small library
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort (import sorting)
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "SIM",   # flake8-simplify
+    "RUF",   # ruff-specific rules
+]
+
+# Ignore specific rules that may be too strict for this small project
+ignore = [
+    "E501",   # Line too long (handled by formatter)
+    "SIM108", # Use ternary operator (can reduce readability)
+]
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when they start with underscore
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Use double quotes for strings
+quote-style = "double"
+
+# Indent with spaces
+indent-style = "space"
+
+# Like Black, respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect line endings
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+# Group imports into sections
+known-first-party = ["fake_useragent_min"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
